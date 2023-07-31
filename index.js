@@ -1,65 +1,147 @@
-var existPath = require('./main.js');
-/*const pathRelativetoAbsolute = require('./main.js')
-const validateDirectory = require('./main.js')
-const getAllFilesDirectory = require('./main.js')
-const existMdFile = require('./main.js')*/
+import chalk from 'chalk';
+import {
+  existPath,
+  pathRelativetoAbsolute,
+  validateDirectory,
+  getAllFilesDirectory,
+  mdFiles,
+  validateFile,
+  getHttpResponse,
+  getResultValidateStats,
+  getStatsResult,
+  analyzeMdFilesArray,
+} from './main.js';
 
 function mdlinks(path, options) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     // ver si la ruta existe
-    //let mdFilesArray = [];
-    if (existPath(path)){
-      console.log('la ruta existe')
-            
-     /* const pathAbsolute = pathRelativetoAbsolute(path)
+    const mdFilesArray = [];
+    if (existPath(path)) {
+      console.log(
+        chalk.bold.inverse.green('------------La ruta existe-----------------'),
+      );
 
-          if(validateDirectory(pathAbsolute)){ // valida que el path sea de un directorio
-            getAllFilesDirectory(pathAbsolute).forEach(file => { // getAllFilesDirectory obtiene los archivos que hay dentro del directorio
-              console.log('Registros: ' + getAllFilesDirectory(pathAbsolute));
-              if(existMdFile(file)){ // valida archivo por archivo para saber si es o no .MD
-                mdFilesArray.push(file); // En caso de encontrarlo lo almacena en un array
-              }else{
-                if(mdFilesArray === []){ // Valida que en caso de no encontrar archivos .MD muestre el mensaje informativo
-                  console.log(chalk.bgRed.bold('------ ERROR: no existe archivos .md ------'));
-                }
-              }
-            });
-          } else {
-            // Entra a validar cuando por el path se pasa el archivo .md: node cli.js ./testing/archivo.md --validate --stats
-            if(existMdFile(pathAbsolute)){ 
-              mdFilesArray.push(pathAbsolute);
-            }else{
-               // Valida que en caso de no encontrar archivos .MD muestre el mensaje informativo
-                console.log(chalk.bgRed.bold('------ ERROR: no existe archivos .md ------'));          
-            }
-          }
-          resolve(mdFilesArray)
+      const pathAbsolute = pathRelativetoAbsolute(path);
 
-      /*async function readAllFiles(pathAbsolute, fileArray = []){
-        const files = getFiles(pathAbsolute)
-        files.forEach(file => {
-          const stat = getFiles(`${pathAbsolute}/${file}`)
-          if(stat.isDirectory()){
-            readAllFiles(`${pathAbsolute}/${file}`, fileArray)
-          }else{
-            fileArray.push(`${pathAbsolute}/${file}`)
-          }
+      if (validateFile(pathAbsolute)) {
+        console.log(
+          chalk.bold.inverse.yellow('------ La ruta es un archivo .md ------'),
+        );
+        if (mdFiles(pathAbsolute)) {
+          mdFilesArray.push(pathAbsolute);
+        } else {
+          console.log(
+            chalk.bold.inverse.red(
+              chalk.bold.inverse.red(
+                '------ ERROR: La ruta no es un archivo .md ------',
+              ),
+            ),
+          );
         }
-        )
-        return fileArray
-      }
-
-      readAllFiles() */
-
       } else {
+        // console.log(validateDirectory(pathAbsolute))
+        if (validateDirectory(pathAbsolute)) {
+          console.log(chalk.bold.inverse.blue('------ La ruta es un directorio ------'));
+          getAllFilesDirectory(pathAbsolute).forEach((file) => {
+            // console.log('Registros: ' + getAllFilesDirectory(pathAbsolute));
+            if (mdFiles(file)) {
+              console.log(chalk.bold.inverse.yellow('------ El directorio tiene archivos .md ------'));
+              mdFilesArray.push(file);
+            } else {
+              // console.log(mdFilesArray)
+              if (mdFilesArray === []) {
+                console.log(chalk.bold.inverse.red('------ ERROR: no se encontró archivos .md ------'));
+              }
+            }
+          });
+        } else if (mdFiles(pathAbsolute)) {
+          mdFilesArray.push(pathAbsolute);
+        } else {
+          console.log(
+            chalk.bold.inverse.red(
+              '------ ERROR: no existe archivos .md ------',
+            ),
+          );
+        }
+      }
+      console.log(mdFilesArray);
+      console.log(options.validate, 'jjajajajajaja');
+
+      if (options.validate === true && options.stats === true) {
+        analyzeMdFilesArray(mdFilesArray).then((res) => {
+          // console.log(res, 'holaaaaaaaaaaaaaaaaaaaaa');
+          getHttpResponse(res).then((result) => {
+            const resultValidateAndStats = getResultValidateStats(result);
+            console.log(chalk.bgMagenta.bold('------ Validación de análisis de resultados y estadísticas ------'));
+            console.log(resultValidateAndStats);
+            resolve(resultValidateAndStats);
+          });
+        });
+
+        // Este es el proceso para realizar el proceso de Validate
+      } else if (options.validate === true && options.stats === false) {
+        analyzeMdFilesArray(mdFilesArray).then((result) => {
+          getHttpResponse(result).then((res) => {
+            const validateLink = res;
+            resolve(validateLink);
+            console.log(
+              chalk.bgMagenta.bold(
+                '------ Validar analisis de resultado ------',
+              ),
+            );
+            console.log(validateLink);
+          });
+        });
+
+        // Este es el proceso para realizar el proceso de Stats
+      } else if (options.stats === true && options.validate === false) {
+        console.log(analyzeMdFilesArray(mdFilesArray), 'some');
+        analyzeMdFilesArray(mdFilesArray).then((result) => {
+          const valueStats = getStatsResult(result);
+          console.log(
+            chalk.bgMagenta.bold('------ Validar analisis de resultado ------'),
+          );
+          console.log(valueStats);
+          resolve(valueStats);
+        });
+
+        // Acá ingresa cuando no se tienen agregadas las banderas y se pasa unicamente el path
+      } else {
+        analyzeMdFilesArray(mdFilesArray).then((result) => {
+          const noOptions = result;
+          resolve(noOptions);
+          console.log(
+            chalk.bgMagenta.bold(
+              '------ Analisis de resultado DOCUMENTO md. -------',
+            ),
+          );
+          console.log(noOptions);
+        });
+      }
+    } /* else {
       //si no existe se rechaza la promesa
-      reject('la ruta no existe');
+      reject(chalk.bold.inverse.red("la ruta no existe jajajajaja"));
+    } */
+  });
+}
+
+// mdlinks('./PRUEBA', { validate: true, stats: true });
+export default mdlinks;
+/* function hola(a,b) {
+  return new Promise((resolve, reject) => {
+    if(a>b){
+      resolve( a+b, 'felicidades')
+    }
+    else{
+      reject(a-b,'lo sentimos mucho :c ')
     }
 
-  });
-};
+  })
+}
 
-// mdlinks('./oriana/msms/kfj.md');
-
-module.exports = mdlinks;
-
+console.log(hola(3,4))
+hola(3,4).then((res) =>{
+  console.log(res, 'resultado positivo')
+}).catch((err) =>
+  console.error('Error:', err)
+) */
