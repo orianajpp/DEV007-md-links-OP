@@ -9,6 +9,8 @@ export const pathRelativetoAbsolute = (paths) => resolve(paths);
 export const validateFile = (paths) => statSync(paths).isFile();
 export const validateDirectory = (paths) => statSync(paths).isDirectory();
 
+//--------------------------- funcion que recorre toda la ruta ----------------------------------------
+
 export function getAllFilesDirectory(path) {
   if (validateDirectory(path)) {
     const files = readdirSync(path);
@@ -22,14 +24,18 @@ export function getAllFilesDirectory(path) {
   }
 }
 
+//--------------------------- funcion que detecta archivos md ----------------------------------------
+
 export const mdFiles = (paths) => extname(paths) === '.md';
 
-const linksRx =
-  /\[(.+?)\]\((https?:\/\/[^\s]+)(?: '(.+)')?\)|(https?:\/\/[^\s]+)/gi;
+//-------------------constantes que guardan los regex para buscar buscar links, url y text -------------
+
+const linksRx = /\[(.+?)\]\((https?:\/\/[^\s]+)(?: '(.+)')?\)|(https?:\/\/[^\s]+)/gi;
 const urlRx = /\((https?:\/\/[^\s]+)(?: '(.+)')?\)|(https?:\/\/[^\s]+)/gi;
 const textRx = /\[(\w+.+?)\]/gi;
 
-//Función que permite obtener los links del documento MD
+//------------------------Función que permite obtener los links del documento MD-----------------------
+
 export const getLinks = (file, content) => {
   const arrayResponse = [];
   if (!linksRx.test(content)) {
@@ -38,13 +44,12 @@ export const getLinks = (file, content) => {
         '------ ERROR: No existen enlaces en la ruta ' + `${file}` + '------'
       )
     );
-    return []; // no se encontraron enlaces
+    return [];
   } else {
-    //si se encuentran enlaces ejecuta
-    const matches = content.match(linksRx); // Obtiene las coincidencias de enlaces de las expresiones regulares
-    matches.forEach((item) => {
+    const matches = content.match(linksRx);
+      matches.forEach((item) => {
       // console.log('Item Value:' + item)
-      const matchesText = item.match(textRx); // obtiene concidencias de texto
+      const matchesText = item.match(textRx);
       let unitText = '';
       let originText = ['No texto'];
       if (matchesText) {
@@ -69,7 +74,8 @@ export const getLinks = (file, content) => {
   }
 };
 
-// Función que se encarga de validar el array de los md encontrados
+//--------------------------- Función que se encarga de validar el array de los md encontrados------------------
+
 export const analyzeMdFilesArray = (mdFilesArray) => {
   const backupArray = [];
   return new Promise((resolve, reject) => {
@@ -82,7 +88,7 @@ export const analyzeMdFilesArray = (mdFilesArray) => {
           );
         } else {
           backupArray.push(getLinks(file, content));
-          const merge = [].concat(...backupArray); // fusiona los elementos en un solo arreglo merge
+          const merge = [].concat(...backupArray);
           if (index === mdFilesArray.length - 1) {
             resolve(merge);
           }
@@ -92,30 +98,33 @@ export const analyzeMdFilesArray = (mdFilesArray) => {
   });
 };
 
-//Función para obtener la estadistica sobre los enlaces de las opción Stats
+//-----------------Función para obtener la estadistica sobre los enlaces de las opción Stats-----------------
+
 export const getStatsResult = (arrayObject) => {
-  const arrayLink = arrayObject.map((element) => element.href); //contiene las URl de los objetos
+  const arrayLink = arrayObject.map((element) => element.href);
   const uniqueLink = new Set(arrayLink);
   // console.log(uniqueLink, 'yo naci en esta rivera')
   return {
-    Total: arrayLink.length, //Longitud del arreglo / cantidad total de enlaces href
-    Unique: uniqueLink.size, // tamaño /cantidad de enlaces unicos
+    Total: arrayLink.length,
+    Unique: uniqueLink.size,
   };
 };
 
-// Función que permite obtener los resultados --validate --stats
+//---------------------------- Función que permite obtener los resultados --validate --stats------------------
+
 export const getResultValidateStats = (arrayObject) => {
-  const arrayLink = arrayObject.map((element) => element.href); //contiene las URl de los objetos
+  const arrayLink = arrayObject.map((element) => element.href);
   const uniqueLink = new Set(arrayLink);
   const brokenLink = arrayObject.filter((element) => element.ok === 'fail');
   return {
     Total: arrayLink.length,
     Unique: uniqueLink.size,
-    Broken: brokenLink.length, // cantidad de enlaces rotos encontrados
+    Broken: brokenLink.length,
   };
 };
 
-// peticiones HTTP validacion de los linksRx - entrega el objeto con status y ok
+//--------------- peticiones HTTP validacion de los linksRx - entrega el objeto con status y ok---------------
+
 export const getHttpResponse = (mdFilesArrayLink) => {
   const validate = mdFilesArrayLink.map((link) => {
     return axios
@@ -132,7 +141,7 @@ export const getHttpResponse = (mdFilesArrayLink) => {
       .catch((err) => {
         const responseValidate = {
           ...link,
-          status: err.response ? 404 : 'ERROR', // objeto de error en la peticion
+          status: err.response ? 404 : 'ERROR',
           ok: 'fail',
         };
         return responseValidate;
