@@ -1,7 +1,7 @@
 import { existsSync, statSync, readdirSync, readFile } from 'fs';
 import { extname, resolve } from 'path';
 import axios from 'axios';
-import chalk from 'chalk';
+// import chalk from 'chalk';
 
 export const existPath = (paths) => existsSync(paths);
 export const pathRelativetoAbsolute = (paths) => resolve(paths);
@@ -40,9 +40,8 @@ export const getLinks = (file, content) => {
   const arrayResponse = [];
   if (!linksRx.test(content)) {
     console.log(
-      chalk.bgRed.bold(
+      
         '------ ERROR: No existen enlaces en la ruta ' + `${file}` + '------'
-      )
     );
     return [];
   } else {
@@ -84,7 +83,7 @@ export const analyzeMdFilesArray = (mdFilesArray) => {
       readFile(`${file}`, 'utf-8', (err, content) => {
         if (err) {
           reject(
-            chalk.bgRed.bold('------ ERROR: Analizar archivos md. ------')
+            '------ ERROR: Analizar archivos md. ------'
           );
         } else {
           backupArray.push(getLinks(file, content));

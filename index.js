@@ -5,7 +5,6 @@ import {
   validateDirectory,
   getAllFilesDirectory,
   mdFiles,
-  validateFile,
   getHttpResponse,
   getResultValidateStats,
   getStatsResult,
@@ -23,9 +22,9 @@ function mdlinks(path, options) {
 
       const pathAbsolute = pathRelativetoAbsolute(path);
 
-      if (validateFile(pathAbsolute)) {
+      /* if (validateFile(pathAbsolute)) {
         console.log(
-          chalk.bold.inverse.yellow('------ La ruta es un archivo .md ------'),
+          chalk.bold.inverse.yellow('------ La ruta es un archivo------'),
         );
         if (mdFiles(pathAbsolute)) {
           mdFilesArray.push(pathAbsolute);
@@ -38,32 +37,33 @@ function mdlinks(path, options) {
             ),
           );
         }
-      } else {
-        // console.log(validateDirectory(pathAbsolute))
-        if (validateDirectory(pathAbsolute)) {
-          console.log(chalk.bold.inverse.blue('------ La ruta es un directorio ------'));
-          getAllFilesDirectory(pathAbsolute).forEach((file) => {
-            // console.log('Registros: ' + getAllFilesDirectory(pathAbsolute));
-            if (mdFiles(file)) {
-              console.log(chalk.bold.inverse.yellow('------ El directorio tiene archivos .md ------'));
-              mdFilesArray.push(file);
-            } else {
-              // console.log(mdFilesArray)
-              if (mdFilesArray === []) {
-                console.log(chalk.bold.inverse.red('------ ERROR: no se encontró archivos .md ------'));
-              }
-            }
-          });
-        } else if (mdFiles(pathAbsolute)) {
-          mdFilesArray.push(pathAbsolute);
-        } else {
-          console.log(
-            chalk.bold.inverse.red(
-              '------ ERROR: no existe archivos .md ------',
-            ),
-          );
+      } else { */
+      // console.log(validateDirectory(pathAbsolute))
+      if (validateDirectory(pathAbsolute)) {
+        console.log(chalk.bold.inverse.blue('------ La ruta es un directorio ------'));
+        getAllFilesDirectory(pathAbsolute).forEach((file) => {
+          // console.log('Registros: ' + getAllFilesDirectory(pathAbsolute));
+          if (mdFiles(file)) {
+            console.log(chalk.bold.inverse.yellow('------ El directorio tiene archivos .md ------'));
+            mdFilesArray.push(file);
+          } else {
+            // console.log(mdFilesArray)
+            console.log(chalk.red('errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrr'));
+          }
+        });
+        if (mdFilesArray === []) {
+          console.log(chalk.bold.inverse.red('------ ERROR: no se encontró archivos .md ------'));
         }
+      } else if (mdFiles(pathAbsolute)) {
+        mdFilesArray.push(pathAbsolute);
+      } else {
+        console.log(
+          chalk.bold.inverse.red(
+            '------ ERROR: no existe archivos .md ------',
+          ),
+        );
       }
+
       console.log(mdFilesArray);
       console.log(options.validate, 'jjajajajajaja');
 

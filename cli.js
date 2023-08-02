@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import mdLinks from './index.js';
-// console.log(mdLinks)
+// console.log(mdLinks);
 mdLinks().then(() => {})
   .catch((err) => console.log('Error:', err));
 
