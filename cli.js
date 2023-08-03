@@ -4,28 +4,30 @@ import mdLinks from './index.js';
 mdLinks().then(() => {})
   .catch((err) => console.log('Error:', err));
 
-console.log(process.argv[2]);
-console.log(process.argv[3]);
-console.log(process.argv[4]);
+// console.log(process.argv[2]);
+// console.log(process.argv[3]);
+// console.log(process.argv[4]);
 
 const path = process.argv[2];
-const option1 = process.argv[3];
-const option2 = process.argv[4];
+const optionOne = process.argv[3];
+const optionTwo = process.argv[4];
 
 if (path) {
-  console.log(chalk.bgBlue.bold('----- MdLinks Comenzar ------'));
-  // if (option1 === undefined && option2 === undefined) {
+  console.log(chalk.bgBlue.bold('---------------------- Comenzar ------------------------'));
+  // if (optionOne === undefined && optionTwo === undefined) {
   // mdLinks(path, { validate: false, stats: false }).then(result => result)
-  if (option1 === '--validate' && option2 === undefined) {
+  if (optionOne === '--validate' && optionTwo === undefined) {
     mdLinks(path, { validate: true, stats: false }).then((result) => result)
       .catch((err) => console.log(err));
-  } else if (option1 === '--stats' && option2 === undefined) {
+  } else if (optionOne === '--stats' && optionTwo === undefined) {
     mdLinks(path, { validate: false, stats: true }).then((result) => result)
       .catch((err) => console.log(err));
-  } else if ((option1 === '--validate' && option2 === '--stats') || (option1 === '--stats' && option2 === '--validate')) {
+  } else if ((optionOne === '--validate' && optionTwo === '--stats') || (optionOne === '--stats' && optionTwo === '--validate')) {
     mdLinks(path, { validate: true, stats: true }).then((result) => result)
       .catch((err) => console.log(err));
   } else {
     console.log(chalk.inverse.bold('------ ERROR: No existe la opción por favor probar con: --validate, --stats, -- stats --validate" ------'));
   }
+} else {
+  console.log('------------La ruta no existe -------------');
 }

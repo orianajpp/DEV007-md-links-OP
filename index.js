@@ -9,10 +9,11 @@ import {
   getResultValidateStats,
   getStatsResult,
   analyzeMdFilesArray,
+  validateFile,
 } from './main.js';
 
 function mdlinks(path, options) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     // ver si la ruta existe
     const mdFilesArray = [];
     if (existPath(path)) {
@@ -21,28 +22,22 @@ function mdlinks(path, options) {
       );
 
       const pathAbsolute = pathRelativetoAbsolute(path);
+      console.log('hola', validateFile(pathAbsolute));
 
-      /* if (validateFile(pathAbsolute)) {
-        console.log(
-          chalk.bold.inverse.yellow('------ La ruta es un archivo------'),
-        );
+      if (validateFile(pathAbsolute)) {
+        console.log(chalk.bold.inverse.yellow('------ La ruta es un archivo------'));
         if (mdFiles(pathAbsolute)) {
           mdFilesArray.push(pathAbsolute);
         } else {
-          console.log(
-            chalk.bold.inverse.red(
-              chalk.bold.inverse.red(
-                '------ ERROR: La ruta no es un archivo .md ------',
-              ),
-            ),
-          );
+          console.log(chalk.bold.inverse.red('------ ERROR: La ruta no es un archivo .md ------'));
         }
-      } else { */
+      }
+      /* else { */
       // console.log(validateDirectory(pathAbsolute))
       if (validateDirectory(pathAbsolute)) {
         console.log(chalk.bold.inverse.blue('------ La ruta es un directorio ------'));
         getAllFilesDirectory(pathAbsolute).forEach((file) => {
-          // console.log('Registros: ' + getAllFilesDirectory(pathAbsolute));
+          console.log(`Registros: ${getAllFilesDirectory(pathAbsolute)}`);
           if (mdFiles(file)) {
             console.log(chalk.bold.inverse.yellow('------ El directorio tiene archivos .md ------'));
             mdFilesArray.push(file);
@@ -63,9 +58,9 @@ function mdlinks(path, options) {
           ),
         );
       }
-
-      console.log(mdFilesArray);
-      console.log(options.validate, 'jjajajajajaja');
+      console.log(mdFilesArray, 'ppppppppppppppppppppppppp');
+      // console.log(mdFilesArray);
+      // console.log(options.validate, 'jjajajajajaja');
 
       if (options.validate === true && options.stats === true) {
         analyzeMdFilesArray(mdFilesArray).then((res) => {
@@ -118,14 +113,14 @@ function mdlinks(path, options) {
           console.log(noOptions);
         });
       }
-    } /* else {
-      //si no existe se rechaza la promesa
-      reject(chalk.bold.inverse.red("la ruta no existe jajajajaja"));
-    } */
+    } else {
+      // si no existe se rechaza la promesa
+      reject(chalk.bold.inverse.red('la ruta no existe jajajajaja'));
+    }
   });
 }
 
-// mdlinks('./PRUEBA', { validate: true, stats: true });
+mdlinks('./PR', { validate: false, stats: true });
 export default mdlinks;
 /* function hola(a,b) {
   return new Promise((resolve, reject) => {

@@ -69,6 +69,7 @@ export const getLinks = (file, content) => {
         path: `${file}`,
       });
     });
+    console.log(arrayResponse, 'ttttttttttttttttttttttt')
     return arrayResponse;
   }
 };
@@ -102,7 +103,7 @@ export const analyzeMdFilesArray = (mdFilesArray) => {
 export const getStatsResult = (arrayObject) => {
   const arrayLink = arrayObject.map((element) => element.href);
   const uniqueLink = new Set(arrayLink);
-  // console.log(uniqueLink, 'yo naci en esta rivera')
+   console.log(uniqueLink, 'yo naci en esta rivera')
   return {
     Total: arrayLink.length,
     Unique: uniqueLink.size,
@@ -135,6 +136,7 @@ export const getHttpResponse = (mdFilesArrayLink) => {
           status: result.status,
           ok: result.statusText,
         };
+        console.log(responseValidate, 'lllllllllllllllllllllllllllllll')
         return responseValidate;
       })
       .catch((err) => {
