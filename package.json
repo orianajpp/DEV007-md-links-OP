@@ -1,12 +1,12 @@
 {
-  "name": "md-links",
+  "name": "md-oplinks",
   "version": "1.0.0",
   "type": "module",
   "engines": {
     "node": ">=16.x"  
   },
   "bin" : {
-    "mdLink-OP" : "cli.js"
+    "npm-op" : "cli.js"
   },
   "bootcamp": {
     "createdAt": "2023-06-20T14:05:58.211Z",

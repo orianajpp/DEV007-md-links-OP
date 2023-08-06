@@ -1,9 +1,10 @@
 import { existsSync, statSync, readdirSync, readFile } from 'fs';
-import { extname, resolve } from 'path';
+import { extname, isAbsolute, resolve } from 'path';
 import axios from 'axios';
 // import chalk from 'chalk';
 
 export const existPath = (paths) => existsSync(paths);
+export const pathIsAbsolute = (paths) => isAbsolute(paths);
 export const pathRelativetoAbsolute = (paths) => resolve(paths);
 
 export const validateFile = (paths) => statSync(paths).isFile();
