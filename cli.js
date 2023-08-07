@@ -2,9 +2,9 @@
 import chalk from 'chalk';
 import mdLinks from './index.js';
 // console.log(mdLinks);
-mdLinks().then(() => {})
+/* mdLinks().then(() => {})
   .catch((err) => console.log('Error:', err));
-
+ */
 // console.log(process.argv[2]);
 // console.log(process.argv[3]);
 // console.log(process.argv[4]);
@@ -14,7 +14,7 @@ const optionOne = process.argv[3];
 const optionTwo = process.argv[4];
 
 if (path) {
-  console.log(chalk.bgBlue.bold('---------------------- Comenzar ------------------------'));
+  console.log(chalk.bold.blueBright('- COMENZAR -'));
   // if (optionOne === undefined && optionTwo === undefined) {
   // mdLinks(path, { validate: false, stats: false }).then(result => result)
   if (optionOne === '--validate' && optionTwo === undefined) {
@@ -27,8 +27,6 @@ if (path) {
     mdLinks(path, { validate: true, stats: true }).then((result) => result)
       .catch((err) => console.log(err));
   } else {
-    console.log(chalk.inverse.bold('------ ERROR: No existe la opción por favor probar con: --validate, --stats, -- stats --validate" ------'));
+    console.log(chalk.bold.redBright('ERROR: No existe la opción por favor probar con: --validate, --stats, --stats --validate'));
   }
-} else {
-  console.log('------------La ruta no existe -------------');
 }

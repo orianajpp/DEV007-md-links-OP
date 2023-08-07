@@ -9,6 +9,7 @@ import {
   getStatsResult,
   getLinks,
   getHttpResponse,
+  pathIsAbsolute,
 } from '../main.js';
 
 // console.log(existPath);
@@ -22,6 +23,16 @@ describe('existPath', () => {
   });
   it('Debe validar cuando el path no existe', () => {
     expect(existPath('../testing/oriana.md')).toEqual(false);
+  });
+});
+
+describe('pathIsAbsolute', () => {
+  it('Debe ser una función', () => {
+    // typeof para encontrar el tipo de dato de una variable de JS
+    expect(typeof pathIsAbsolute).toBe('function');
+  });
+  it('Debe validar si el path es absoluto', () => {
+    expect(pathIsAbsolute('C:/Users/Nova Electra/Desktop/DEV007-md-links-OP')).toEqual(true);
   });
 });
 

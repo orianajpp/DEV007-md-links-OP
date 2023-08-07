@@ -1,61 +1,45 @@
 # md-oplinks
 
-## Índice
-
-* [1.¿Que es md-oplinks y para que sirve?](#a
-)
-* [2. Resumen del proyecto](#2-resumen-del-proyecto)
-* [3. Objetivos de aprendizaje](#3-objetivos-de-aprendizaje)
-* [4. Consideraciones generales](#4-consideraciones-generales)
-* [5. Criterios de aceptación mínimos del proyecto](#5-criterios-de-aceptación-mínimos-del-proyecto)
-* [6. Entregables](#6-entregables)
-* [7. Hacker edition](#7-hacker-edition)
-* [8. Pistas, tips y lecturas complementarias](#8-pistas-tips-y-lecturas-complementarias)
-* [9. Checklist](#9-checklist)
-* [10. Achicando el problema](#10-achicando-el-problema)
-* [HOLA]
-
-***
-
-## 
 
 ![md-oplinks](./img/mdlinks.jpg) 
  
  
 
 #### ¿Que es md-oplinks y para que sirve?<a name='a'></a>
-Es una herramienta de linea de comando (CLI) y una libreria instalable que facilita a los usuarios buscar y analizar archivos markdown (.md). Esta permite verificar si estan funcionando correcatamente o presentan links invalidos o, como comunmente se les conoce 'links rotos'.
+Es una herramienta de linea de comando (CLI) y una libreria instalable que facilita a los usuarios buscar y analizar archivos markdown (.md) con solo proporcionar la ruta que se quiere examinar. También permite verificar si los archivos .md encontrados tienen links y si estos estan funcionando correcatamente o no.
 
-Este programa esta estructurado de la siguiente manera: 
+La estructura del módulo es  la siguiente
 
 ![Diagrama de flujo](./img/Diagrama.jpg)
 
 
 
-#### ¿Como instalar?<a></a>
+#### ¿Como instalar?
 
 Para instalar la libreria debes seguir los siguientes pasos:
 
-1. Abre la terminal de tu sistema operativo.
-2.  Navegue hasta el directorio raíz de su proyecto o la ubicación donde desea instalar la biblioteca.
-2. Ejecute el siguiente comando en la terminal para instalar la biblioteca desde el registro del paquete npm: 
+1. Abrir la terminal del sistema operativo de la pc.
+2.  Navegar hasta el directorio raíz del proyecto o la ubicación donde desea instalar la biblioteca.
+2. Ejecutar el siguiente comando en la terminal para instalar la biblioteca desde el registro del paquete npm: 
+
 ```sh
 npm md-oplinks install
 ```
-3. Una vez completada la instalación, puede importar y usar la biblioteca en su proyecto de acuerdo con las instrucciones de uso proporcionadas en la guía de uso.
+3. Una vez completada la instalación, puede importar y usar la biblioteca en el proyecto de acuerdo con las instrucciones de uso que se proporcionan a continuación.
 
 
 #### ¿Como usar?
 
-Una vez instalado, debes colocar en la terminal lo siguiente: 
+Una vez instalado, se debe colocar en la terminal lo siguiente: 
 
 ```sh
 md-oplinks <path> [opciones]
 ```
  donde:
+
  path = es la ruta que se quiere analizar. Cabe destacar que la ruta puede ser absoluta o relativa. 
 
- options = es la manera en el CLI retorna los resultados. 
+ options = es la manera en la que se solicita se expresen los resultados del análisis.
 
  Si se ingresa
   ```sh 
@@ -105,3 +89,8 @@ Total: 3
 Unique: 3
 Broken: 1
 ```
+#### Efectividad del pprograma
+
+Se realizaron pruebas unitarias para la verificación del correcto funcionamiento de las unidades de código principales (main.js). Se obtuvo el siguiente resultado:
+
+

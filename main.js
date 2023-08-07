@@ -1,12 +1,12 @@
 import { existsSync, statSync, readdirSync, readFile } from 'fs';
 import { extname, isAbsolute, resolve } from 'path';
 import axios from 'axios';
-// import chalk from 'chalk';
+
+//funciones que validan si existe, si es absoluto, lo transforma a abs el path, si encontro arichivos o directorios----------
 
 export const existPath = (paths) => existsSync(paths);
 export const pathIsAbsolute = (paths) => isAbsolute(paths);
 export const pathRelativetoAbsolute = (paths) => resolve(paths);
-
 export const validateFile = (paths) => statSync(paths).isFile();
 export const validateDirectory = (paths) => statSync(paths).isDirectory();
 
@@ -40,12 +40,10 @@ const textRx = /\[(\w+.+?)\]/gi;
 export const getLinks = (file, content) => {
   const arrayResponse = [];
   if (!linksRx.test(content)) {
-    console.log(
-      
-        '------ ERROR: No existen enlaces en la ruta ' + `${file}` + '------'
-    );
+    console.log('ERROR: No existen enlaces en la ruta ' + `${file}`);
     return [];
   } else {
+    console.log('Ruta con archivos .md: ' + `${file}`)
     const matches = content.match(linksRx);
       matches.forEach((item) => {
       // console.log('Item Value:' + item)
@@ -69,8 +67,10 @@ export const getLinks = (file, content) => {
         text: originText[0],
         path: `${file}`,
       });
+     
     });
-    console.log(arrayResponse, 'ttttttttttttttttttttttt')
+   
+    // console.log(arrayResponse, 'array de respuesta')
     return arrayResponse;
   }
 };
@@ -85,12 +85,14 @@ export const analyzeMdFilesArray = (mdFilesArray) => {
       readFile(`${file}`, 'utf-8', (err, content) => {
         if (err) {
           reject(
-            '------ ERROR: Analizar archivos md. ------'
+            ' ERROR: error al analizar archivos .md'
           );
         } else {
           backupArray.push(getLinks(file, content));
+         // console.log(backupArray, 'TODO PARA MI');
           const merge = [].concat(...backupArray);
           if (index === mdFilesArray.length - 1) {
+          //  console.log(merge, 'TODO PARA TI')
             resolve(merge);
           }
         }
@@ -104,7 +106,7 @@ export const analyzeMdFilesArray = (mdFilesArray) => {
 export const getStatsResult = (arrayObject) => {
   const arrayLink = arrayObject.map((element) => element.href);
   const uniqueLink = new Set(arrayLink);
-   console.log(uniqueLink, 'yo naci en esta rivera')
+   // console.log(uniqueLink, 'yo naci en esta rivera')
   return {
     Total: arrayLink.length,
     Unique: uniqueLink.size,
@@ -137,7 +139,6 @@ export const getHttpResponse = (mdFilesArrayLink) => {
           status: result.status,
           ok: result.statusText,
         };
-        console.log(responseValidate, 'lllllllllllllllllllllllllllllll')
         return responseValidate;
       })
       .catch((err) => {
