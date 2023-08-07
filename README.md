@@ -23,7 +23,7 @@ Para instalar la libreria debes seguir los siguientes pasos:
 2. Ejecutar el siguiente comando en la terminal para instalar la biblioteca desde el registro del paquete npm: 
 
 ```sh
-npm md-oplinks install
+npm install md-oplinks
 ```
 3. Una vez completada la instalación, puede importar y usar la biblioteca en el proyecto de acuerdo con las instrucciones de uso que se proporcionan a continuación.
 
