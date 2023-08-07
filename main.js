@@ -84,12 +84,13 @@ export const analyzeMdFilesArray = (mdFilesArray) => {
 
       readFile(`${file}`, 'utf-8', (err, content) => {
         if (err) {
+          console.log(err, 'akakakakaka')
           reject(
             ' ERROR: error al analizar archivos .md'
           );
         } else {
           backupArray.push(getLinks(file, content));
-         // console.log(backupArray, 'TODO PARA MI');
+          // console.log(backupArray, 'TODO PARA MI');
           const merge = [].concat(...backupArray);
           if (index === mdFilesArray.length - 1) {
           //  console.log(merge, 'TODO PARA TI')
@@ -131,11 +132,10 @@ export const getResultValidateStats = (arrayObject) => {
 export const getHttpResponse = (mdFilesArrayLink) => {
   const validate = mdFilesArrayLink.map((link) => {
     return axios
-      .get(link.href) // devuelve una promesa que se resuelve con el resultad de la solicitud
+      .get(link.href) 
       .then((result) => {
-        //objeto de respuesta exitosa de peticiones
         const responseValidate = {
-          ...link, // para agregar lo de link
+          ...link, 
           status: result.status,
           ok: result.statusText,
         };
@@ -147,6 +147,7 @@ export const getHttpResponse = (mdFilesArrayLink) => {
           status: err.response ? 404 : 'ERROR',
           ok: 'fail',
         };
+        console.log(responseValidate)
         return responseValidate;
       });
   });

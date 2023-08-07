@@ -33,10 +33,10 @@ npm md-oplinks install
 Una vez instalado, se debe colocar en la terminal lo siguiente: 
 
 ```sh
-md-oplinks <path> [opciones]
+npx md-oplinks <path> [opciones]
 ```
  donde:
-
+  
  path = es la ruta que se quiere analizar. Cabe destacar que la ruta puede ser absoluta o relativa. 
 
  options = es la manera en la que se solicita se expresen los resultados del análisis.
@@ -92,5 +92,7 @@ Broken: 1
 #### Efectividad del pprograma
 
 Se realizaron pruebas unitarias para la verificación del correcto funcionamiento de las unidades de código principales (main.js). Se obtuvo el siguiente resultado:
+
+![test](./img/test.JPG)
 
 
